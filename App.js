@@ -20,7 +20,6 @@ class App {
         this.element.querySelectorAll('[data-call]').forEach(element => {
             const target = element.getAttribute("data-call");
             const tagname = element.tagName.toLowerCase();
-            console.log(tagname);
             if (tagname == 'form') {
                 element.addEventListener('submit', (event) => {
                     event.preventDefault();
