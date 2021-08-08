@@ -21,6 +21,10 @@ app.on('update', () => {
 
 });
 
+app.defineFunction('handleForm', (event, data) => {
+    console.log(event, data);
+});
+
 app.defineFunction('changePage', (event, page) => {
     app.variables.page = page;
 });

@@ -19,6 +19,15 @@ class App {
 
         this.element.querySelectorAll('[data-call]').forEach(element => {
             const target = element.getAttribute("data-call");
+            const tagname = element.tagName.toLowerCase();
+            console.log(tagname);
+            if (tagname == 'form') {
+                element.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    this.functions.get(target.replace('()', ''))(event, formDataToObject(new FormData(element)));
+                });
+                return;
+            }
             if (target.includes('(')) {
                 const passedVariables = target.split('(')[1].replace(')', '').split(', ').map(passedVariable => passedVariable.substring(1).slice(0, -1));
                 element.addEventListener('click', (event) => this.functions.get(target.split('(')[0])(event, ...passedVariables));
@@ -172,6 +181,14 @@ class App {
                 this.components.set(element.getAttribute("data-define-component"), element);
         });
     }
+}
+
+function formDataToObject(formData) {
+    const obj = {};
+    for (var key of formData.keys()) {
+        obj[key] = formData.get(key);
+    }
+    return obj;
 }
 
 function removeVariables(str) {
