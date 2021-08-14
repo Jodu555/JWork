@@ -16,6 +16,10 @@ class App {
     }
 
     init() {
+        // window.addEventListener('hashchange', (event) => {
+        //     console.log(location.hash.substr(1));
+        //     console.log(event);
+        // })
 
         this.element.querySelectorAll('[data-call]').forEach(element => {
             const target = element.getAttribute("data-call");

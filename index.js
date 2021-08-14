@@ -2,10 +2,11 @@ const app = new App(document.querySelector('#app'), {
     page: 'home',
     history: [],
     historyString: '/'
-}, (app) => {
-    //Must use passed variable cause the original app variable is not defined
-    app.variables.historyString = app.variables.page;
-});
+}
+    , (app) => {
+        //Must use passed variable cause the original app variable is not defined
+        app.variables.historyString = app.variables.page;
+    });
 
 app.defineChnageWrapper('page', (prev, curr) => {
     app.variables.history.push(prev);
