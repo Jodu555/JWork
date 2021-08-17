@@ -1,6 +1,15 @@
-class App {
-    constructor(element, variables, onCreate, autoInit = true,) {
-        this.element = element;
+import {
+    formDataToObject,
+    removeVariables,
+    stripOutVariables,
+    concatWithVariables,
+    clone,
+    createElementFromHTML,
+    createElementsFromHTML
+} from './utils.js';
+
+class View {
+    constructor(name, variables, onCreate) {
         this.prevariables = { ...variables };
         this.variables = variables;
         this.functions = new Map();
@@ -9,9 +18,8 @@ class App {
         this.components = new Map();
         this.needupdate = false;
         this.defaultCycleTime = 10;
-        this.eventfunctions.set('create', onCreate(this));
-        if (autoInit)
-            this.init();
+        if (onCreate)
+            this.eventfunctions.set('create', onCreate(this));
         return this;
     }
 
@@ -19,7 +27,7 @@ class App {
         // window.addEventListener('hashchange', (event) => {
         //     console.log(location.hash.substr(1));
         //     console.log(event);
-        // })
+        // });
 
         this.element.querySelectorAll('[data-call]').forEach(element => {
             const target = element.getAttribute("data-call");
@@ -186,46 +194,4 @@ class App {
     }
 }
 
-function formDataToObject(formData) {
-    const obj = {};
-    for (var key of formData.keys()) {
-        obj[key] = formData.get(key);
-    }
-    return obj;
-}
-
-function removeVariables(str) {
-    const array = stripOutVariables(str);
-    array.forEach(element => {
-        str = str.replace('${{' + element + '}}', '');
-    });
-    return str;
-}
-
-function stripOutVariables(str) {
-    const array = str.split('${{');
-    array.shift();
-    const variables = array.filter(e => e !== '').map(element => element.split('}}')[0].replace(',', ''));
-    return variables;
-}
-
-function concatWithVariables(str, variables) {
-    stripOutVariables(str).forEach(vari => str = str.replace('${{' + vari + '}}', variables[vari]));
-    return str;
-}
-
-function clone(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
-
-function createElementFromHTML(htmlString) {
-    const div = document.createElement('div');
-    div.innerHTML = htmlString.trim();
-    return div.firstChild;
-}
-
-function createElementsFromHTML(htmlString) {
-    const div = document.createElement('div');
-    div.innerHTML = htmlString.trim();
-    return [...div.children];
-}
+export { View };
