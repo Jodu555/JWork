@@ -140,33 +140,14 @@ class View {
             });
         });
 
-        this.element.querySelectorAll('[data-if]').forEach(element => {
-            const target = element.getAttribute("data-if");
-            let show = true;
-            if (target.includes('==')) {
-                show = this.variables[target.split(' == ')[0]] == target.split(' == ')[1];
-            } else {
-                let negated = target.startsWith('!');
-                target.replace('!', '');
-                show = negated ? !this.variables[target] : this.variables[target];
-            }
-            element.style.display = show ? '' : 'none';
-        });
+        this.updateDataForElements();
+        this.updateDataIfElements();
+        this.updateVarContainsElements();
 
-        this.element.querySelectorAll('[data-for]').forEach(element => {
-            const target = element.getAttribute("data-for");
-            const split = target.split(' in ');
-            this.variables[split[1]].forEach(item => {
-                const clone = element.cloneNode(true);
-                clone.innerText = clone.innerText.replace(`{{${split[0]}}}`, item);
-                clone.style.display = '';
-                clone.removeAttribute('data-for');
-                clone.setAttribute('data-kill', true);
-                element.after(clone);
-            });
-            element.style.display = 'none';
-        });
+        // console.timeEnd('update');
+    }
 
+    updateVarContainsElements() {
         this.element.querySelectorAll('*').forEach(element => {
             if (element.innerText.includes('${{') && element.children.length == 0) {
                 const clone = element.cloneNode(true);
@@ -180,8 +161,37 @@ class View {
                 element.setAttribute('data-varaiable', true);
             }
         });
+    }
 
-        // console.timeEnd('update');
+    updateDataForElements() {
+        this.element.querySelectorAll('[data-for]').forEach(element => {
+            const target = element.getAttribute("data-for");
+            const split = target.split(' in ');
+            this.variables[split[1]].forEach(item => {
+                const clone = element.cloneNode(true);
+                clone.innerText = clone.innerText.replace(`{{${split[0]}}}`, item);
+                clone.style.display = '';
+                clone.removeAttribute('data-for');
+                clone.setAttribute('data-kill', true);
+                element.after(clone);
+            });
+            element.style.display = 'none';
+        });
+    }
+
+    updateDataIfElements() {
+        this.element.querySelectorAll('[data-if]').forEach(element => {
+            const target = element.getAttribute("data-if");
+            let show = true;
+            if (target.includes('==')) {
+                show = this.variables[target.split(' == ')[0]] == target.split(' == ')[1];
+            } else {
+                let negated = target.startsWith('!');
+                target.replace('!', '');
+                show = negated ? !this.variables[target] : this.variables[target];
+            }
+            element.style.display = show ? '' : 'none';
+        });
     }
 
     setHTMLFile(file) {
