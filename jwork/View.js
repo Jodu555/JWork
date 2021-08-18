@@ -18,48 +18,40 @@ class View {
         this.components = new Map();
         this.needupdate = false;
         this.defaultCycleTime = 10;
+        this.initial = true;
+        this.interval = null;
         if (onCreate)
             this.eventfunctions.set('create', onCreate(this));
         return this;
     }
 
-    init(element, app) {
+    initFromApp(element, app) {
         this.element = element;
         this.app = app;
+        this.app.generateViewPart();
+        this.init();
+        this.update();
+    }
 
-        this.app.getViewPart();
+    init() {
+
         // window.addEventListener('hashchange', (event) => {
         //     console.log(location.hash.substr(1));
         //     console.log(event);
         // });
+        console.log('INIT');
 
-        this.element.querySelectorAll('[data-call]').forEach(element => {
-            const target = element.getAttribute("data-call");
-            const tagname = element.tagName.toLowerCase();
-            if (tagname == 'form') {
-                element.addEventListener('submit', (event) => {
-                    event.preventDefault();
-                    this.functions.get(target.replace('()', ''))(event, formDataToObject(new FormData(element)));
-                });
-                return;
-            }
-            if (target.includes('(')) {
-                const passedVariables = target.split('(')[1].replace(')', '').split(', ').map(passedVariable => passedVariable.substring(1).slice(0, -1));
-                element.addEventListener('click', (event) => this.functions.get(target.split('(')[0])(event, ...passedVariables));
-            } else {
-                element.addEventListener('click', (event) => this.functions.get(target)(event));
-            }
+        this.initCallElements();
 
-        });
         this.element.querySelectorAll('[data-define-component]').forEach(element => {
             this.components.set(element.getAttribute("data-define-component"), element);
         });
-
-        setInterval(() => {
+        clearInterval(this.interval);
+        this.interval = setInterval(() => {
             if (document.hidden)
                 return;
             if (this.needupdate) {
-                this.needupdate = !this.needupdate;
+                this.needupdate = false;
                 this.update();
             }
             let change = true;
@@ -82,7 +74,6 @@ class View {
         }, 10);
 
         this.call('create');
-        this.update();
     }
 
     call(event) {
@@ -90,7 +81,28 @@ class View {
             this.eventfunctions.get(event.toLowerCase())();
     }
 
+    initCallElements() {
+        this.element.querySelectorAll('[data-call]').forEach(element => {
+            const target = element.getAttribute("data-call");
+            const tagname = element.tagName.toLowerCase();
+            if (tagname == 'form') {
+                element.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    this.functions.get(target.replace('()', ''))(event, formDataToObject(new FormData(element)));
+                });
+                return;
+            }
+            if (target.includes('(')) {
+                const passedVariables = target.split('(')[1].replace(')', '').split(', ').map(passedVariable => passedVariable.substring(1).slice(0, -1));
+                element.addEventListener('click', (event) => this.functions.get(target.split('(')[0])(event, ...passedVariables));
+            } else {
+                element.addEventListener('click', (event) => this.functions.get(target)(event));
+            }
+        });
+    }
+
     update() {
+        // console.log('UPDATE');
         // console.time('update');
         this.call('update');
 
@@ -99,17 +111,23 @@ class View {
         this.element.querySelectorAll('[data-load-component]').forEach(element => {
             try {
                 let target = element.getAttribute("data-load-component");
+                if (target == 'index' && !this.initial) {
+                    return;
+                }
                 if (stripOutVariables(target).length !== 0) {
                     target = this.variables[stripOutVariables(target)[0]];
                 }
                 let template = this.components.get(target)
                 typeof template == 'string' ? template = createElementFromHTML(template) : template = template;
                 element.innerHTML = template.innerHTML;
+                if (this.target == 'index')
+                    this.initial = false;
             } catch (error) {
-                // console.error(error);
                 this.needupdate = true;
             }
         });
+
+        this.initCallElements();
 
         this.element.querySelectorAll('[data-bind]').forEach(element => {
             const target = element.getAttribute("data-bind");

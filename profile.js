@@ -36,7 +36,7 @@ view.defineFunction('clearHistory', (event, page) => {
 
 view.setHTMLFile('profile.html');
 // view.defineComponent('about', 'another.html'); //One Component from file name is setted
-// view.defineComponents('another.html'); // More than one Component from file name dynamically loads
+view.defineComponents('another.html'); // More than one Component from file name dynamically loads
 
 
 export { view };

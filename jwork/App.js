@@ -3,12 +3,11 @@ class App {
         this.element = element;
         this.views = views;
         views.forEach(view => {
-            console.log('APP: ', this);
-            view.init(element, this);
+            view.initFromApp(element, this);
         });
         return this;
     }
-    getViewPart() {
+    generateViewPart() {
         const template = document.createElement('div');
         template.setAttribute('data-load-component', 'index')
         this.element.appendChild(template);
