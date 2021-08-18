@@ -23,7 +23,11 @@ class View {
         return this;
     }
 
-    init() {
+    init(element, app) {
+        this.element = element;
+        this.app = app;
+
+        this.app.getViewPart();
         // window.addEventListener('hashchange', (event) => {
         //     console.log(location.hash.substr(1));
         //     console.log(event);
@@ -146,7 +150,7 @@ class View {
         });
 
         this.element.querySelectorAll('*').forEach(element => {
-            if (element.innerText.includes('${{')) {
+            if (element.innerText.includes('${{') && element.children.length == 0) {
                 const clone = element.cloneNode(true);
                 element.after(clone);
                 clone.innerText = concatWithVariables(clone.innerText, this.variables);
@@ -156,11 +160,14 @@ class View {
 
                 element.style.display = 'none';
                 element.setAttribute('data-varaiable', true);
-
             }
         });
 
         // console.timeEnd('update');
+    }
+
+    setHTMLFile(file) {
+        this.defineComponent('index', file);
     }
 
     //key = create | update |
