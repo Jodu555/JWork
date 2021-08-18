@@ -128,7 +128,17 @@ class View {
         });
 
         this.initCallElements();
+        this.updateDataBindElements();
 
+
+        this.updateDataForElements();
+        this.updateDataIfElements();
+        this.updateVarContainsElements();
+
+        // console.timeEnd('update');
+    }
+
+    updateDataBindElements() {
         this.element.querySelectorAll('[data-bind]').forEach(element => {
             const target = element.getAttribute("data-bind");
             if (element.tagName.toLowerCase() !== 'input') {
@@ -139,12 +149,6 @@ class View {
                 this.variables[target] = event.target.value;
             });
         });
-
-        this.updateDataForElements();
-        this.updateDataIfElements();
-        this.updateVarContainsElements();
-
-        // console.timeEnd('update');
     }
 
     updateVarContainsElements() {
