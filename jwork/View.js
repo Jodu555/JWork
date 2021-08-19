@@ -40,7 +40,7 @@ class View {
         //     console.log(location.hash.substr(1));
         //     console.log(event);
         // });
-        console.log('INIT');
+        // console.log('INIT');
 
         this.initCallElements();
         this.element.querySelectorAll('[data-define-component]').forEach(element => {
