@@ -5,7 +5,8 @@ import {
     concatWithVariables,
     clone,
     createElementFromHTML,
-    createElementsFromHTML
+    createElementsFromHTML,
+    removeEventListenersFromElement
 } from './utils.js';
 
 class View {
@@ -33,7 +34,7 @@ class View {
         this.update();
     }
 
-    init() {
+    init(with_interval = true) {
 
         // window.addEventListener('hashchange', (event) => {
         //     console.log(location.hash.substr(1));
@@ -42,10 +43,12 @@ class View {
         console.log('INIT');
 
         this.initCallElements();
-
         this.element.querySelectorAll('[data-define-component]').forEach(element => {
             this.components.set(element.getAttribute("data-define-component"), element);
         });
+
+        if (!with_interval)
+            return;
         clearInterval(this.interval);
         this.interval = setInterval(() => {
             if (document.hidden)
@@ -82,6 +85,11 @@ class View {
     }
 
     initCallElements() {
+        //Remove All Other Listeners
+        this.element.querySelectorAll('[data-call]').forEach(element => {
+            element.replaceWith(element.cloneNode(true));
+        });
+        //Append All Listeners back
         this.element.querySelectorAll('[data-call]').forEach(element => {
             const target = element.getAttribute("data-call");
             const tagname = element.tagName.toLowerCase();
@@ -120,6 +128,7 @@ class View {
                 let template = this.components.get(target)
                 typeof template == 'string' ? template = createElementFromHTML(template) : template = template;
                 element.innerHTML = template.innerHTML;
+                this.init(false);
                 if (this.target == 'index')
                     this.initial = false;
             } catch (error) {

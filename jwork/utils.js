@@ -42,6 +42,12 @@ function createElementsFromHTML(htmlString) {
     return [...div.children];
 }
 
+function removeEventListenersFromElement(element) {
+    // console.log(element);
+    // const elementClone = element.cloneNode(true);
+    // element.parentNode.replaceChild(elementClone, element);
+}
+
 export {
     formDataToObject,
     removeVariables,
@@ -49,5 +55,6 @@ export {
     concatWithVariables,
     clone,
     createElementFromHTML,
-    createElementsFromHTML
+    createElementsFromHTML,
+    removeEventListenersFromElement
 };
