@@ -41,3 +41,10 @@ import { view as profileView } from './profile.js';
 const app = new App(document.querySelector('#app'), [
     profileView,
 ]);
+app.setRouter({
+    'profileView': {
+        route: '/',
+    }
+});
+
+app.init();

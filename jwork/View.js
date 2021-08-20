@@ -11,6 +11,7 @@ import {
 
 class View {
     constructor(name, variables, onCreate) {
+        this.name = name;
         this.prevariables = { ...variables };
         this.variables = variables;
         this.functions = new Map();
@@ -36,11 +37,6 @@ class View {
 
     init(with_interval = true) {
 
-        // window.addEventListener('hashchange', (event) => {
-        //     console.log(location.hash.substr(1));
-        //     console.log(event);
-        // });
-        // console.log('INIT');
 
         this.initCallElements();
         this.element.querySelectorAll('[data-define-component]').forEach(element => {
