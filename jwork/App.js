@@ -1,3 +1,7 @@
+import {
+    matchEndpoint
+} from './utils.js';
+
 class App {
     constructor(element, views) {
         this.element = element;
@@ -32,9 +36,12 @@ class App {
             const route = value.route;
             if (!fallback)
                 fallback = route == '/' ? key : fallback;
-            if (route == hash) {
+            const matcher = matchEndpoint(hash, route);
+            if (matcher.match) {
                 this.currentView = this.getViewByName(key);
                 this.initView(this.currentView)
+
+                this.currentView.variables.$router = matcher.variables;
             }
         });
         if (this.currentView == null) {

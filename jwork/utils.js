@@ -22,7 +22,16 @@ function stripOutVariables(str) {
 }
 
 function concatWithVariables(str, variables) {
-    stripOutVariables(str).forEach(vari => str = str.replace('${{' + vari + '}}', variables[vari]));
+    console.log(str, variables);
+    stripOutVariables(str).forEach(vari => {
+        // if (vari.includes('.')) {
+        //     const depth = 
+        //     const variable = 
+        //     str = str.replace('${{' + vari + '}}', variables[vari])
+        // } else {
+        return str = str.replace('${{' + vari + '}}', variables[vari]);
+        // }
+    });
     return str;
 }
 
@@ -43,6 +52,9 @@ function createElementsFromHTML(htmlString) {
 }
 
 function matchEndpoint(path, match) {
+    if (!(path && match)) {
+        return { match: false, variables: {} };
+    }
     var pattern = match.split("/");
     var output = false;
     let variables = {};
