@@ -22,7 +22,6 @@ function stripOutVariables(str) {
 }
 
 function concatWithVariables(str, variables) {
-    console.log(str, variables);
     stripOutVariables(str).forEach(vari => {
         if (vari.includes('.')) {
             let dep = vari.split('.').reduce((acc, curr) => acc = acc ? acc = acc[curr] : acc = variables[curr], false);
@@ -60,6 +59,8 @@ function matchEndpoint(path, match) {
     try {
         let i = 0;
         path.split('/').forEach((string) => {
+            if (string.trim() == '' || pattern[i].trim() == '')
+                return;
             if (string == pattern[i] || pattern[i + 1] == string || pattern[i].startsWith(':') || pattern[i].startsWith(':?')) {
                 if (pattern[i].startsWith(':') && !pattern[i].startsWith(':?')) {
                     const variable = pattern[i].replace(':', '').replaceAll('', '');
