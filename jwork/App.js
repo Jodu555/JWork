@@ -52,7 +52,6 @@ class App {
     }
 
     satisfyRoute(route) {
-        console.log('INPUT', route);
         if (route.startsWith('.')) {
             if (route.charAt(1) !== '/') {
                 route = this.satisfyRoute(route.substring(1))
