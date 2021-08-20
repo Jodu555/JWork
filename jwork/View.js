@@ -136,7 +136,7 @@ class View {
         });
 
         this.element.querySelectorAll('a').forEach(element => {
-            element.setAttribute('href', '#' + element.getAttribute("href"));
+            element.setAttribute('href', '#' + this.app.satisfyRoute(element.getAttribute("href")));
         });
 
         this.initCallElements();

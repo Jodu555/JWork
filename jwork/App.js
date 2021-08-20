@@ -13,6 +13,7 @@ class App {
         // this.views.forEach(view => {
         //     view.initFromApp();
         // });
+        window.app = this;
         this.handleRouting();
         window.addEventListener('hashchange', (event) => {
             this.handleRouting();
@@ -20,7 +21,6 @@ class App {
     }
 
     handleRouting() {
-        console.log('Routing');
         this.currentView = null;
         this.element.innerHTML = '';
         const hash = location.hash.substr(1);
@@ -47,14 +47,26 @@ class App {
                 this.element.innerText = 'ERROR: Routing View not Found!';
             }
         }
-        console.log('CURR', this.currentView);
-        console.log('FALLBACK:', fallback);
+        // console.log('CURR', this.currentView);
+        // console.log('FALLBACK:', fallback);
+    }
+
+    satisfyRoute(route) {
+        console.log('INPUT', route);
+        if (route.startsWith('.')) {
+            if (route.charAt(1) !== '/') {
+                route = this.satisfyRoute(route.substring(1))
+            }
+            route = location.hash.substr(1) + route;
+        }
+        if (!route.startsWith('/')) {
+            route = '/' + route;
+        }
+        return route;
     }
 
     route(to) {
-        if (!to.startsWith('/')) {
-            to = '/' + to;
-        }
+        to = this.satisfyRoute(to);
         window.location.hash = to;
         this.handleRouting();
     }
