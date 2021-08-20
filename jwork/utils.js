@@ -42,10 +42,35 @@ function createElementsFromHTML(htmlString) {
     return [...div.children];
 }
 
-function removeEventListenersFromElement(element) {
-    // console.log(element);
-    // const elementClone = element.cloneNode(true);
-    // element.parentNode.replaceChild(elementClone, element);
+function matchEndpoint(path, match) {
+    var pattern = match.split("/");
+    var output = false;
+    let variables = {};
+    try {
+        let i = 0;
+        path.split('/').forEach((string) => {
+            if (string == pattern[i] || pattern[i + 1] == string || pattern[i].startsWith(':') || pattern[i].startsWith(':?')) {
+                if (pattern[i].startsWith(':') && !pattern[i].startsWith(':?')) {
+                    const variable = pattern[i].replace(':', '').replaceAll('', '');
+                    variables[variable] = string;
+                } else if (pattern[i].startsWith(':?')) {
+                    const variable = pattern[i].replace(':?', '').replaceAll('', '');
+                    if (pattern[i + 1] == string) {
+                        //Optional Vairbale not present
+                    } else {
+                        variables[variable] = string;
+                    }
+                }
+                output = true;
+            } else {
+                output = false;
+            }
+            i++;
+        });
+    } catch (error) {
+        output = false;
+    }
+    return { match: output, variables };
 }
 
 export {
@@ -56,5 +81,5 @@ export {
     clone,
     createElementFromHTML,
     createElementsFromHTML,
-    removeEventListenersFromElement
+    matchEndpoint
 };

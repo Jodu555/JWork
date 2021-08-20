@@ -6,7 +6,6 @@ import {
     clone,
     createElementFromHTML,
     createElementsFromHTML,
-    removeEventListenersFromElement
 } from './utils.js';
 
 class View {
