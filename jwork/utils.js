@@ -24,13 +24,12 @@ function stripOutVariables(str) {
 function concatWithVariables(str, variables) {
     console.log(str, variables);
     stripOutVariables(str).forEach(vari => {
-        // if (vari.includes('.')) {
-        //     const depth = 
-        //     const variable = 
-        //     str = str.replace('${{' + vari + '}}', variables[vari])
-        // } else {
-        return str = str.replace('${{' + vari + '}}', variables[vari]);
-        // }
+        if (vari.includes('.')) {
+            let dep = vari.split('.').reduce((acc, curr) => acc = acc ? acc = acc[curr] : acc = variables[curr], false);
+            str = str.replace('${{' + vari + '}}', dep)
+        } else {
+            return str = str.replace('${{' + vari + '}}', variables[vari]);
+        }
     });
     return str;
 }
