@@ -23,9 +23,13 @@ class App {
         this.element.innerHTML = '';
         const hash = location.hash.substr(1);
         let fallback = null;
+        if (this.router.default) {
+            fallback = this.router.default;
+        }
         Object.entries(this.router).forEach(([key, value]) => {
             const route = value.route;
-            fallback = route == '/' ? key : fallback;
+            if (!fallback)
+                fallback = route == '/' ? key : fallback;
             if (route == hash) {
                 this.currentView = this.getViewByName(key);
                 this.initView(this.currentView)
@@ -33,8 +37,12 @@ class App {
         });
         if (this.currentView == undefined) {
             let view = this.getViewByName(fallback);
-            this.initView(view);
-            this.currentView = view;
+            if (view) {
+                this.initView(view);
+                this.currentView = view;
+            } else {
+                this.element.innerText = 'ERROR: Routing View not Found!';
+            }
         }
         console.log('CURR', this.currentView);
         console.log('FALLBACK:', fallback);

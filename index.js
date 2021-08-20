@@ -37,11 +37,15 @@
 // app.defineComponents('another.html'); // More than one Component from file name dynamically loads
 import { App } from './jwork/App.js';
 import { view as profileView } from './profile.js';
+import { view as errorView } from './404.js';
 
 const app = new App(document.querySelector('#app'), [
     profileView,
+    errorView
 ]);
+//If no default provided the / route is default view
 app.setRouter({
+    default: '404',
     'profileView': {
         route: '/',
     }

@@ -12,6 +12,9 @@ import {
 class View {
     constructor(name, variables, onCreate) {
         this.name = name;
+        if (!variables) {
+            variables = {};
+        }
         this.prevariables = { ...variables };
         this.variables = variables;
         this.functions = new Map();
