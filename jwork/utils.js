@@ -59,9 +59,7 @@ function matchEndpoint(path, match) {
     try {
         let i = 0;
         path.split('/').forEach((string) => {
-            if (string.trim() == '' || pattern[i].trim() == '')
-                return;
-            if (string == pattern[i] || pattern[i + 1] == string || pattern[i].startsWith(':') || pattern[i].startsWith(':?')) {
+            if (string == pattern[i] || (pattern[i].startsWith(':') || pattern[i].startsWith(':?'))) {
                 if (pattern[i].startsWith(':') && !pattern[i].startsWith(':?')) {
                     const variable = pattern[i].replace(':', '').replaceAll('', '');
                     variables[variable] = string;
@@ -75,7 +73,8 @@ function matchEndpoint(path, match) {
                 }
                 output = true;
             } else {
-                output = false;
+                output = false
+                return;
             }
             i++;
         });

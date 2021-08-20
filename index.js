@@ -50,7 +50,7 @@ app.setRouter({
         route: '/',
     },
     '404': {
-        route: '/404/:code'
+        route: '/error/:code'
     }
 });
 
