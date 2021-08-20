@@ -48,6 +48,9 @@ app.setRouter({
     default: '404',
     'profileView': {
         route: '/',
+    },
+    '404': {
+        route: '/404'
     }
 });
 

@@ -26,6 +26,7 @@ class App {
         if (this.router.default) {
             fallback = this.router.default;
         }
+
         Object.entries(this.router).forEach(([key, value]) => {
             const route = value.route;
             if (!fallback)
@@ -35,7 +36,9 @@ class App {
                 this.initView(this.currentView)
             }
         });
+
         if (this.currentView == undefined) {
+            console.log('Route does not exists trys Fallback');
             let view = this.getViewByName(fallback);
             if (view) {
                 this.initView(view);
