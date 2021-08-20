@@ -20,13 +20,14 @@ class App {
     }
 
     handleRouting() {
+        console.log('Routing');
+        this.currentView = null;
         this.element.innerHTML = '';
         const hash = location.hash.substr(1);
         let fallback = null;
         if (this.router.default) {
             fallback = this.router.default;
         }
-
         Object.entries(this.router).forEach(([key, value]) => {
             const route = value.route;
             if (!fallback)
@@ -36,8 +37,7 @@ class App {
                 this.initView(this.currentView)
             }
         });
-
-        if (this.currentView == undefined) {
+        if (this.currentView == null) {
             console.log('Route does not exists trys Fallback');
             let view = this.getViewByName(fallback);
             if (view) {
@@ -49,6 +49,14 @@ class App {
         }
         console.log('CURR', this.currentView);
         console.log('FALLBACK:', fallback);
+    }
+
+    route(to) {
+        if (!to.startsWith('/')) {
+            to = '/' + to;
+        }
+        window.location.hash = to;
+        this.handleRouting();
     }
 
     initView(view) {
