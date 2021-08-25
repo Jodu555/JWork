@@ -223,6 +223,7 @@ class View {
     }
 
     //Defines
+    //TODO: Allow to define a function to call e.g. when 1 of two variables changed
     defineChnageWrapper(key, fun) {
         this.changeWrappers.set(key, fun);
     }
