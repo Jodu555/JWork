@@ -39,8 +39,13 @@ class View {
 
     init(with_interval = true) {
 
-
         this.initCallElements();
+        this.element.querySelectorAll('script').forEach(element => {
+            const script = document.createElement('script');
+            script.src = element.src;
+            this.element.appendChild(script);
+            element.remove();
+        })
         this.element.querySelectorAll('[data-define-component]').forEach(element => {
             this.components.set(element.getAttribute("data-define-component"), element);
         });
