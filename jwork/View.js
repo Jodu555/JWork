@@ -84,10 +84,16 @@ class View {
 
     initScriptElements() {
         this.element.querySelectorAll('script').forEach(element => {
+
             const script = document.createElement('script');
-            script.src = element.src;
+            if (element.src)
+                script.src = element.src;
+            if (!element.src)
+                script.text = element.text;
+
             this.element.appendChild(script);
             element.remove();
+
         });
     }
 
