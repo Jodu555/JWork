@@ -237,6 +237,7 @@ class View {
         this.changeWrappers.set(key, fun);
     }
     defineFunction(name, fun) {
+        window[name] = fun;
         this.functions.set(name, fun);
     }
     async defineComponent(name, file) {
