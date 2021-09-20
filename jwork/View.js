@@ -178,7 +178,7 @@ class View {
 
     updateVarContainsElements() {
         this.element.querySelectorAll('*').forEach(element => {
-            if (element.innerText.includes('${{') && element.children.length == 0) {
+            if (element.innerText.includes('${{') && element.children.length == 0 && element.style.display !== 'none') {
                 const clone = element.cloneNode(true);
                 element.after(clone);
                 clone.innerText = concatWithVariables(clone.innerText, this.variables);
@@ -200,9 +200,9 @@ class View {
                 const clone = element.cloneNode(true);
                 const forVars = this.variables;
                 forVars[split[0]] = item;
-                clone.innerText = concatWithVariables(clone.innerText, forVars)
-                clone.style.display = '';
+                clone.innerText = concatWithVariables(clone.innerText, forVars);
                 clone.removeAttribute('data-for');
+                clone.style.display = '';
                 [...clone.attributes].forEach(attribute => {
                     const { name, value } = attribute;
                     clone.setAttribute(name, concatWithVariables(clone.innerText, forVars));
