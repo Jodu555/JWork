@@ -14,7 +14,7 @@
 
         <h1>History: ${{historyString}}</h1>
 
-        <h1 data-for="a in testData">{{a.name}}</h1>
+        <h1 data-for="a in testData" data-call="test('${{a.name}}'">${{a.name}}</h1>
 
         <div data-load-component="${{page}}"></div>
         <script src="test.js"></script>

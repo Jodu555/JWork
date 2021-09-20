@@ -198,9 +198,16 @@ class View {
             const split = target.split(' in ');
             this.variables[split[1]].forEach(item => {
                 const clone = element.cloneNode(true);
-                clone.innerText = clone.innerText.replace(`{{${split[0]}}}`, item);
+                const forVars = this.variables;
+                forVars[split[0]] = item;
+                clone.innerText = concatWithVariables(clone.innerText, forVars)
                 clone.style.display = '';
                 clone.removeAttribute('data-for');
+                [...clone.attributes].forEach(attribute => {
+                    const { name, value } = attribute;
+                    clone.setAttribute(name, concatWithVariables(clone.innerText, forVars));
+                });
+
                 clone.setAttribute('data-kill', true);
                 element.after(clone);
             });
