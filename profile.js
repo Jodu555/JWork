@@ -2,7 +2,8 @@ import { View } from './jwork/View.js';
 const view = new View('profileView', {
     page: 'home',
     history: [],
-    historyString: '/'
+    historyString: '/',
+    testData: [{ name: 'asdf', age: 13 }, { name: 'asxsaf', age: 13 }],
 }, (view) => {
     //Must use passed variable cause the original app variable is not defined
     view.variables.historyString = view.variables.page;
