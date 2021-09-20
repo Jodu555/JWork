@@ -39,7 +39,8 @@ class View {
 
     init(with_interval = true) {
         this.initCallElements();
-        this.initScriptElements();
+        if (this.initial)
+            this.initScriptElements();
 
         this.element.querySelectorAll('[data-define-component]').forEach(element => {
             this.components.set(element.getAttribute("data-define-component"), element);
@@ -84,16 +85,13 @@ class View {
 
     initScriptElements() {
         this.element.querySelectorAll('script').forEach(element => {
-
             const script = document.createElement('script');
             if (element.src)
                 script.src = element.src;
             if (!element.src)
                 script.text = element.text;
-
             this.element.appendChild(script);
             element.remove();
-
         });
     }
 
@@ -126,7 +124,6 @@ class View {
         // console.log('UPDATE');
         // console.time('update');
         this.call('update');
-
         [...this.element.querySelectorAll('[data-kill]')].filter(e => e.getAttribute("data-kill") == 'true').forEach(e => e.remove());
 
         this.element.querySelectorAll('[data-load-component]').forEach(element => {
@@ -142,8 +139,10 @@ class View {
                 typeof template == 'string' ? template = createElementFromHTML(template) : template = template;
                 element.innerHTML = template.innerHTML;
                 this.init(false);
-                if (this.target == 'index')
+                if (target == 'index') {
                     this.initial = false;
+                }
+
             } catch (error) {
                 this.needupdate = true;
             }
