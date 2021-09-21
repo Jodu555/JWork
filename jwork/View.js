@@ -102,9 +102,6 @@ class View {
         });
         //Append All Listeners back
         this.element.querySelectorAll('[data-call]').forEach(element => {
-            if (element.style.display == 'none')
-                return;
-            // console.log(element);
             const target = element.getAttribute("data-call");
             const tagname = element.tagName.toLowerCase();
             if (tagname == 'form') {
@@ -151,6 +148,8 @@ class View {
             }
         });
 
+        this.updateDataForElements();
+
         this.element.querySelectorAll('a').forEach(element => {
             element.setAttribute('href', '#' + this.app.satisfyRoute(element.getAttribute("href")));
         });
@@ -158,8 +157,6 @@ class View {
         this.initCallElements();
         this.updateDataBindElements();
 
-
-        this.updateDataForElements();
         this.updateDataIfElements();
         this.updateVarContainsElements();
 
@@ -199,7 +196,6 @@ class View {
         this.element.querySelectorAll('[data-for]').forEach(element => {
             const target = element.getAttribute("data-for");
             const split = target.split(' in ');
-            // console.log(element.children);
             this.variables[split[1]].forEach(item => {
                 const clone = element.cloneNode(true);
                 const forVars = this.variables;

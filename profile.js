@@ -36,7 +36,7 @@ view.defineFunction('clearHistory', (event, page) => {
     view.variables.history = [];
 });
 
-view.defineFunction('test', (name) => {
+view.defineFunction('test', (event, name) => {
     console.log('sdfnsijodnjoisd: ' + name);
 })
 
