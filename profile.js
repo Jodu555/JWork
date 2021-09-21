@@ -9,11 +9,11 @@ const view = new View('profileView', {
     view.variables.historyString = view.variables.page;
 });
 
-view.defineChnageWrapper('page', (prev, curr) => {
+view.defineChangeWrapper('page', (prev, curr) => {
     view.variables.history.push(prev);
 });
 
-view.defineChnageWrapper('history', (prev, curr) => {
+view.defineChangeWrapper('history', (prev, curr) => {
     view.variables.historyString = view.variables.history.reduce((acc, curr) => {
         return acc += curr + ' / ';
     }, '') + view.variables.page;
