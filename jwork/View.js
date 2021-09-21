@@ -196,6 +196,7 @@ class View {
         this.element.querySelectorAll('[data-for]').forEach(element => {
             const target = element.getAttribute("data-for");
             const split = target.split(' in ');
+            // console.log(element.children);
             this.variables[split[1]].forEach(item => {
                 const clone = element.cloneNode(true);
                 const forVars = this.variables;

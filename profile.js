@@ -29,6 +29,7 @@ view.defineFunction('handleForm', (event, data) => {
 
 view.defineFunction('changePage', (event, page) => {
     view.variables.page = page;
+    view.variables.testData.push({ name: page, age: page.length })
 });
 
 view.defineFunction('clearHistory', (event, page) => {
