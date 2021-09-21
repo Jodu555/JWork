@@ -102,6 +102,9 @@ class View {
         });
         //Append All Listeners back
         this.element.querySelectorAll('[data-call]').forEach(element => {
+            if (element.style.display == 'none')
+                return;
+            // console.log(element);
             const target = element.getAttribute("data-call");
             const tagname = element.tagName.toLowerCase();
             if (tagname == 'form') {
@@ -206,7 +209,7 @@ class View {
                 clone.style.display = '';
                 [...clone.attributes].forEach(attribute => {
                     const { name, value } = attribute;
-                    clone.setAttribute(name, concatWithVariables(clone.innerText, forVars));
+                    clone.setAttribute(name, concatWithVariables(value, forVars));
                 });
 
                 clone.setAttribute('data-kill', true);

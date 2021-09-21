@@ -14,11 +14,7 @@
 
         <h1>History: ${{historyString}}</h1>
 
-        <div data-for="a in testData">
-            <h1 data-call="test('${{a.name}}'">Name: ${{a.name}}</h1>
-            <h1 data-call="test('${{a.name}}'">Alter: ${{a.age}}</h1>
-            <hr>
-        </div>
+        <h1 data-for="a in testData" data-call="test('${{a.name}})'">${{a.name}}</h1>
 
         <div data-load-component="${{page}}"></div>
         <script src="test.js"></script>
