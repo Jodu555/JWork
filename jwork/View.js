@@ -9,6 +9,7 @@ import {
 } from './utils.js';
 
 class View {
+
     constructor(name, variables, onCreate) {
         this.name = name;
         if (!variables) {
@@ -79,8 +80,10 @@ class View {
     }
 
     call(event) {
-        if (this.eventfunctions.get(event.toLowerCase()))
-            this.eventfunctions.get(event.toLowerCase())();
+        event = event.toLowerCase();
+        this.eventfunctions.get(event).forEach(fn => {
+            fn();
+        });
     }
 
     initScriptElements() {
@@ -236,8 +239,13 @@ class View {
 
     //key = create | update |
     on(key, fun) {
+        key = key.toLowerCase();
         if (key == 'create' || key == 'update') {
-            this.eventfunctions.set(key.toLowerCase(), fun);
+            if (this.eventfunctions.has(key)) {
+                this.eventfunctions.set(key, [fun]);
+            } else {
+                this.eventfunctions.get(key).push(fun);
+            }
         } else {
             console.error('Event: ' + key + ' is not supported yet! Please remove it from your application!');
         }
