@@ -63,8 +63,11 @@ class View {
             // console.log(JSON.stringify(this.prevariables), JSON.stringify(this.variables));
             if (JSON.stringify(this.prevariables) !== JSON.stringify(curr)) {
                 Object.keys(curr).forEach(key => {
-                    if (curr[key] !== this.prevariables[key] && this.changeWrappers.get(key)) {
-                        change = this.changeWrappers.get(key)(clone(this.prevariables[key]), clone(curr[key]));
+                    if (curr[key] !== this.prevariables[key] && this.changeWrappers.has(key)) {
+                        const changeWrappers = this.changeWrappers.get(key)
+                        changeWrappers.forEach(wrapper => {
+                            wrapper(clone(this.prevariables[key]), clone(curr[key]))
+                        });
                     }
                 });
                 if (change || change == undefined) {
@@ -252,9 +255,12 @@ class View {
     }
 
     //Defines
-    //TODO: Allow to define a function to call e.g. when 1 of two variables changed
     defineChangeWrapper(key, fun) {
-        this.changeWrappers.set(key, fun);
+        if (this.changeWrappers.has(key)) {
+            this.changeWrappers.set(key, [fun]);
+        } else {
+            this.changeWrappers.get(key).push(fun);
+        }
     }
     defineFunction(name, fun) {
         window[name] = fun;
