@@ -9,5 +9,5 @@ Personal Framework for testing puposes and some learning stuff
 * [x] Implement the object property handling in for elements
 * [ ] Implement the in depth varibale change support also for change wrappers
 * [ ] Handle the for element with multiple elements inside
-* [ ] Implement the support for multiple on functions for one key
+* [x] Implement the support for multiple on functions for one key
 * [ ] Implement the support for multiple change wrappers for one variable
