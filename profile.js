@@ -19,8 +19,8 @@ view.defineChangeWrapper('history', (prev, curr) => {
     }, '') + view.variables.page;
 });
 
-view.on('update', () => {
-
+view.on('create', () => {
+    console.log('Test');
 });
 
 view.defineFunction('handleForm', (event, data) => {

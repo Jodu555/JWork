@@ -26,7 +26,7 @@ class View {
         this.initial = true;
         this.interval = null;
         if (onCreate)
-            this.eventfunctions.set('create', onCreate(this));
+            this.eventfunctions.set('create', [onCreate(this)]);
         return this;
     }
 
@@ -84,9 +84,11 @@ class View {
 
     call(event) {
         event = event.toLowerCase();
-        this.eventfunctions.get(event).forEach(fn => {
-            fn();
-        });
+        if (this.eventfunctions.has(event))
+            this.eventfunctions.get(event).forEach(fn => {
+                if (fn)
+                    fn();
+            });
     }
 
     initScriptElements() {
@@ -244,7 +246,7 @@ class View {
     on(key, fun) {
         key = key.toLowerCase();
         if (key == 'create' || key == 'update') {
-            if (this.eventfunctions.has(key)) {
+            if (!this.eventfunctions.has(key)) {
                 this.eventfunctions.set(key, [fun]);
             } else {
                 this.eventfunctions.get(key).push(fun);
@@ -256,7 +258,7 @@ class View {
 
     //Defines
     defineChangeWrapper(key, fun) {
-        if (this.changeWrappers.has(key)) {
+        if (!this.changeWrappers.has(key)) {
             this.changeWrappers.set(key, [fun]);
         } else {
             this.changeWrappers.get(key).push(fun);
